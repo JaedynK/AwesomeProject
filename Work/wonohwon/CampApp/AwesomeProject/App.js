@@ -1,80 +1,55 @@
-import { StyleSheet, Text, View,SafeAreaView,SectionList,StatusBar,FlatList} from 'react-native';
-// import NavigationBar from 'react-native-navigation-bar';
+import { StyleSheet, Text, View,SafeAreaView,SectionList,StatusBar,FlatList,Button} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import React from 'react';
-import settings from './componets';
+import * as React from 'react';
+import Settings  from './components/Setting.js';
+import FoodList  from './components/FoodList.js';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
+function SettingsScreen({navigation}) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Home Screen</Text>
+      <Button
+        title="Go to settings"
+        onPress={() => navigation.navigate('Settings')}
+      />
+    </View>
+  );
+}
+
+function FoodListScreen({navigation}) {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>FoodList screen</Text>
+      <Button
+        title="Go to List"
+        onPress={() => navigation.navigate('FoodList')}
+      />
+    </View>
+  );
+}
+
+function MainScreen() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen name="FoodList" component={FoodListScreen} />
+    </Tab.Navigator>
+  );
+}
 
 export default function App() {
-  const Tab = createBottomTabNavigator();
-  const DATA = [
-    {
-      title: 'Main dishes',
-      data: ['Pizza', 'Burger', 'Risotto'],
-    },
-    {
-      title: 'Sides',
-      data: ['French Fries', 'Onion Rings', 'Fried Shrimps', "Green Beans"],
-    },
-    {
-      title: 'Drinks',
-      data: ['Water', 'Coke', 'Beer'],
-    },
-    {
-      title: 'Desserts',
-      data: ['Cheese Cake', 'Ice Cream'],
-    },
-  ];
-  const ListItem = ({ item }) => {
-    return (
-      <View>
-        {/* When Images is needed */}
-        {/* <Image
-        source={{
-          uri: item.uri,
-        }}
-        style={styles.itemPhoto}
-        resizeMode="cover"
-      /> */}
-           <Text style={styles.item}>{item}</Text>
-      </View>
-    );
-  };
 
   return (
     <NavigationContainer>
-    <View style={styles.container}>
-    <StatusBar style="light" />
-    <SafeAreaView style={{ flex: 1 }}>
-      <SectionList
-        contentContainerStyle={{ paddingHorizontal: 10 }}
-        stickySectionHeadersEnabled={false}
-        sections={DATA}
-        renderSectionHeader={({ section }) => (
-          <>
-            <Text style={styles.header}>{section.title}</Text>
-            {section ? (
-              <FlatList
-                horizontal
-                data={section.data}
-                renderItem={({ item }) => <ListItem item={item} />}
-                showsHorizontalScrollIndicator={false}
-              />
-            ) : null}
-          </>
-        )}
-        renderItem={({ item, section }) => {
-          return null;
-        }}
-      />
-      <Tab.Navigator>
-      <Tab.Screen name="Home" component={settings}/>
-    </Tab.Navigator>
-    </SafeAreaView>
-  </View>
-  </NavigationContainer>
-
+      <Stack.Navigator>
+        <Stack.Screen name="Main" component={MainScreen} options={{ headerShown: true }} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
@@ -85,7 +60,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   item: {
-    backgroundColor: '#f9c2ff',
+    backgroundColor: '#ff8',
     padding: 20,
     marginHorizontal: 8,
   },
